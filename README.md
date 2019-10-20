@@ -1,5 +1,10 @@
-# PyPorject-repoTemplate
-A template repository for python project.
+# UR-CodingChallenge
+A Python project for UnitedRemote Coding Challenge.
+
+# Description of files 
+
+- dump-shops/shops/ *shops.bson* : a provided list of shops details in bson format.
+- dump-shops/shops/ *import.py* : a py script to import the list of shops into a postgresql db.  
 
 #### Samples of commands
 
