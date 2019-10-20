@@ -4,7 +4,10 @@ A Python project for UnitedRemote Coding Challenge.
 # Description of files 
 
 - dump-shops/shops/ *shops.bson* : a provided list of shops details in bson format.
-- dump-shops/shops/ *import.py* : a py script to import the list of shops into a postgresql db.  
+- dump-shops/shops/ *import.py* : a py script to import the list of shops into a postgresql db. 
+- *Pipfile* and *Pipfile.lock* : files of the pkg and virtual env management tool 'Pipenv'.
+- *.pre-commit-config.yaml* : a pre-commit config file to let black execute at before each commit.
+- *.gitignore* : a file to let git ignore some local files.   
 
 #### Samples of commands
 
