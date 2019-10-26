@@ -9,7 +9,7 @@ landing_bp = Blueprint(
 
 @landing_bp.route("/", methods=["GET"])
 @landing_bp.route("/index", methods=["GET"])
-def home():
+def index():
     """Landing page route."""
     return render_template("index.html", title="UR-CC")
 
