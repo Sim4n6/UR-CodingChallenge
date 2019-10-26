@@ -1,4 +1,4 @@
-from .landing import landing_routes
+from .main import main_routes
 
 from flask import Flask, render_template, make_response, request, jsonify, Blueprint
 from flask_bootstrap import Bootstrap
@@ -7,7 +7,7 @@ app = Flask(__name__, template_folder="templates", static_folder="static")
 Bootstrap(app)
 
 # register bluprints
-app.register_blueprint(landing_routes.landing_bp)
+app.register_blueprint(main_routes.main_bp)
 
 
 # load env vars
