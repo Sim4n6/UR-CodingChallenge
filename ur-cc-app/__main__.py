@@ -1,20 +1,19 @@
-from flask import Flask
+from .landing import landing_routes
 
-app = Flask(__name__)
+from flask import Flask, render_template, make_response, request, jsonify, Blueprint
+
+app = Flask(__name__, template_folder="templates", static_folder="static")
+app.register_blueprint(landing_routes.landing_bp)
 
 # load env vars
 from dotenv import load_dotenv
+
 load_dotenv(verbose=True)
 
 
-@app.route("/")
-@app.route("/index")
-def index():
-    return "Everything is working !"
-
 def main():
-    app.run(debug=True) 
+    app.run(debug=True)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
