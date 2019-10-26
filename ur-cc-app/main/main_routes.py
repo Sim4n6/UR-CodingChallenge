@@ -7,14 +7,13 @@ main_bp = Blueprint(
 )
 
 
-@main_bp.route("/", methods=["GET"])
-@main_bp.route("/index", methods=["GET"])
-def index():
-    """Landing page route."""
-    return render_template("index.html", title="UR-CC")
+@main_bp.route("/nearby", methods=["GET"])
+def nearby():
+    """Nearby shops page."""
+    return render_template("nearby.html", title="Nearby shops")
 
 
-@main_bp.route("/about", methods=["GET"])
-def about():
-    """About page route."""
-    return render_template("index.html", title="About TODO")
+@main_bp.route("/preferred", methods=["GET"])
+def preferred():
+    """Preferred shops page."""
+    return render_template("preferred.html", title="Preferred shops")
