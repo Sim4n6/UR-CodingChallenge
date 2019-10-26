@@ -1,15 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "bootstrap/base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{ title }}</title>
-</head>
+{% block html_attribs %} lang="en" {% endblock %}
 
-<body>
-    {% include "nav.html" %} {% block content %}{% endblock content%} {% include "footer.html" %}
-</body>
+{% block title %} {{ title }} {% endblock %}
 
-</html>
+{% block navbar %} {% include "nav.html" %} {% endblock %}
+
+{% block content %} {% endblock content %}
