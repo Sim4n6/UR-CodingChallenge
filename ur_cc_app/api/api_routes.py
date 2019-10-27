@@ -1,6 +1,9 @@
 from flask import Blueprint, make_response, jsonify
 from flask import current_app as app
 
+from ur_cc_app import db
+from ur_cc_app.models import Shops
+
 # Blueprint Configuration
 api_bp = Blueprint(
     "api_bp",
@@ -13,6 +16,9 @@ api_bp = Blueprint(
 
 @api_bp.route("/shops", methods=["GET"])
 def listAllShops():
+    results = Shops.query.all()
+    if results != None:
+        print(results)
     return "listAllShops"
 
 
