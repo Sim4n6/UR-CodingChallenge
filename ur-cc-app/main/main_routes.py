@@ -3,7 +3,11 @@ from flask import current_app as app
 
 # Blueprint Configuration
 main_bp = Blueprint(
-    "main_bp", __name__, template_folder="templates", static_folder="static"
+    "main_bp",
+    __name__,
+    url_prefix="/main",
+    template_folder="templates",
+    static_folder="static",
 )
 
 
