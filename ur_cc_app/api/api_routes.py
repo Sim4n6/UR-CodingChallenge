@@ -9,7 +9,7 @@ from ur_cc_app.models import Shops, shop_schema  # FIXME name of SHops --> Shop 
 api_bp = Blueprint(
     "api_bp",
     __name__,
-    url_prefix="/api",
+    url_prefix="/api/v1",
     template_folder="templates",
     static_folder="static",
 )
