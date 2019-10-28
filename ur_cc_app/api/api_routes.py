@@ -1,9 +1,9 @@
 from flask import Blueprint
 from flask import current_app as app
-from flask import jsonify, make_response
+from flask import jsonify, make_response, abort
 
 from ur_cc_app import db
-from ur_cc_app.models import Shops
+from ur_cc_app.models import Shops, shop_schema  # FIX name of SHops --> Shop everywhere
 
 # Blueprint Configuration
 api_bp = Blueprint(
@@ -19,8 +19,9 @@ api_bp = Blueprint(
 def listAllShops():
     results = Shops.query.all()
     if results != None:
-        print(results)
-    return "listAllShops"
+        return jsonify(shop_schema.dump(results)), 200
+    else:
+        abort(400)  # Bad request
 
 
 @api_bp.route("/shops/<int:shopId>", methods=["POST"])
