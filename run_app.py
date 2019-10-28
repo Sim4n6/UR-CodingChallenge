@@ -1,16 +1,13 @@
-from flask import Flask, render_template, make_response, request, jsonify, Blueprint
-
 import os
+
+from dotenv import load_dotenv
+from flask import Blueprint, Flask, jsonify, make_response, render_template, request
+
 from ur_cc_app import create_app
 
 app = create_app()
 
-# from ur_cc_app.models import Shop
-
-
 # load env vars
-from dotenv import load_dotenv
-
 load_dotenv(verbose=True)
 
 

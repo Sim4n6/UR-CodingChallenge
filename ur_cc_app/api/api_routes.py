@@ -1,5 +1,6 @@
-from flask import Blueprint, make_response, jsonify
+from flask import Blueprint
 from flask import current_app as app
+from flask import jsonify, make_response
 
 from ur_cc_app import db
 from ur_cc_app.models import Shops

@@ -1,7 +1,8 @@
-from flask_sqlalchemy import SQLAlchemy
-from flask import Flask, render_template, make_response, request, jsonify, Blueprint
-from flask_bootstrap import Bootstrap
 import os
+
+from flask import Blueprint, Flask, jsonify, make_response, render_template, request
+from flask_bootstrap import Bootstrap
+from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
