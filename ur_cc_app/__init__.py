@@ -1,6 +1,6 @@
 import os
 
-from flask import Blueprint, Flask, jsonify, make_response, render_template, request
+from flask import Blueprint, Flask
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 
@@ -17,11 +17,12 @@ def create_app():
 
     # register bluprints
     from ur_cc_app.main import main_routes
-
     app.register_blueprint(main_routes.main_bp)
 
     from ur_cc_app.api import api_routes
-
     app.register_blueprint(api_routes.api_bp)
+
+    from ur_cc_app.errors import errors_routes
+    app.register_blueprint(errors_routes.error_bp)
 
     return app
