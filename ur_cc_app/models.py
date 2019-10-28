@@ -1,4 +1,5 @@
 from ur_cc_app import db
+from ur_cc_app import ma
 
 
 class Shops(db.Model):
@@ -13,3 +14,20 @@ class Shops(db.Model):
 
     def __repr__(self):
         return f"<Shops {self.name}>"
+
+
+class ShopsSchema(ma.Schema):
+    class Meta:
+        fields = (
+            "id",
+            "picture",
+            "name",
+            "email",
+            "city",
+            "coord_type",
+            "coordinate_lat",
+            "coordinate_long",
+        )
+
+
+shop_schema = ShopsSchema(many=True)
