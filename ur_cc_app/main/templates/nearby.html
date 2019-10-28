@@ -5,16 +5,21 @@
 <div class="container">
     <h1>{{ title }}</h1>
 
+    <div class="row justify-content-md-center">
     {% for shop in all_shops %}
-    <div class="card" style="width: 200px;">
-        <div class="card-body">
-            <h6 class="card-title">{{ shop.name }}</h6>
-            <img src="{{ shop.picture }}" class="card-img-top" alt="..." style="padding-bottom: 10px;">
-            <button type="button" class="btn btn-danger btn-sm" style="width: 77px;">Dislike</button>
-            <button type="button" class="btn btn-success btn-sm" style="width: 77px;">Like</button>
+        <div class="card" style="width: 200px; margin: 5px;">
+            <div class="card-body">
+                <h6 class="card-title">{{ shop.name }}</h6>
+                <img src="{{ shop.picture }}" class="card-img-top" alt="..." style="padding-bottom: 10px;">
+                <div>
+                <button type="button" class="btn btn-danger btn-sm" style="width: 70px;">Dislike</button>
+                <button type="button" class="btn btn-success btn-sm" style="width: 70px;">Like</button>
+            </div>
+            </div>
         </div>
-    </div>
     {% endfor %}
+    
+    </div>
 
 </div>
 {% endblock content %}
