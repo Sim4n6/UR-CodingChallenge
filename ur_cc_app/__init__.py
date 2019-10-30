@@ -1,3 +1,5 @@
+from .config import config_choices
+
 import os
 
 from flask import Blueprint, Flask
@@ -12,11 +14,13 @@ ma = Marshmallow()
 def create_app():
 
     app = Flask(__name__, template_folder="templates", static_folder="static")
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("SQLALCHEMY_DATABASE_URI")
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+    # load the environment configs using FLASK_CONFIG otherwise load Development.
+    app.config.from_object(config_choices[os.getenv("FLASK_CONFIG") or "Development"])
+    print(app.config)
     db.init_app(app)
     ma.init_app(app)
-    Bootstrap(app)
+    bootstrap = Bootstrap(app)
 
     # register bluprints
     from ur_cc_app.main import main_routes
