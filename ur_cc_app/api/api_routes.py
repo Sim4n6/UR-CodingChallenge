@@ -1,5 +1,4 @@
-from flask import Blueprint
-from flask import current_app as app
+from flask import Blueprint, request
 from flask import jsonify, make_response, abort
 
 from ur_cc_app import db
@@ -20,7 +19,16 @@ api_bp = Blueprint(
 
 @api_bp.route("/shops", methods=["GET"])
 def listAllShops():
-    results = Shops.query.all()
+
+    limit = request.args.get("limit")
+    sortByDistance = request.args.get("sortByDistance")
+    print(f" limit to : {limit} -- sorting {sortByDistance}")
+
+    if limit != None:
+        results = Shops.query.limit(limit)
+    else:
+        results = Shops.query.all()
+
     if results != None:
         return jsonify(shop_schema.dump(results)), 200
     else:

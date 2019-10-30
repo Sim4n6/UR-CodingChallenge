@@ -1,5 +1,4 @@
-from flask import Blueprint
-from flask import current_app as app
+from flask import Blueprint, request
 from flask import render_template
 
 import requests
@@ -16,11 +15,11 @@ main_bp = Blueprint(
 
 @main_bp.route("/nearby", methods=["GET"])
 def nearby():
-    """Nearby shops page."""
+    """Nearby shops view function."""
 
-    r = requests.get(
-        "http://localhost:5000/api/v1/shops"
-    )  # FIXME prepare an url independant from localhost
+    # FIXME prepare an url independant from localhost
+    payload = {"limit": 5, "sortByDistance": 1}
+    r = requests.get("http://localhost:5000/api/v1/shops", params=payload)
     all_shops = r.json()
 
     return render_template("nearby.html", title="Nearby shops", all_shops=all_shops)
@@ -28,5 +27,5 @@ def nearby():
 
 @main_bp.route("/preferred", methods=["GET"])
 def preferred():
-    """Preferred shops page."""
+    """Preferred shops view function."""
     return render_template("preferred.html", title="Preferred shops")
