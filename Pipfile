@@ -11,7 +11,6 @@ black = "==19.10b0"
 [packages]
 pymongo = "*"
 psycopg2 = "*"
-python-dotenv = "*"
 flask = "*"
 flask-bootstrap4 = "*"
 flask-sqlalchemy = "*"
