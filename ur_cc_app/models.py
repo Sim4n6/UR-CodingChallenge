@@ -13,7 +13,7 @@ class Shops(db.Model):
     coordinate_long = db.Column(db.Float, nullable=False)
 
     def __repr__(self):
-        return f"<Shops {self.name}>"
+        return f"<Shop {self.name}>"
 
 
 class ShopsSchema(ma.Schema):

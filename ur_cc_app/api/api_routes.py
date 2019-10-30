@@ -3,7 +3,10 @@ from flask import current_app as app
 from flask import jsonify, make_response, abort
 
 from ur_cc_app import db
-from ur_cc_app.models import Shops, shop_schema  # FIXME name of SHops --> Shop everywhere
+from ur_cc_app.models import (
+    Shops,
+    shop_schema,
+)  # FIXME name of SHops --> Shop everywhere
 
 # Blueprint Configuration
 api_bp = Blueprint(

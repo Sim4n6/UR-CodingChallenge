@@ -18,7 +18,9 @@ main_bp = Blueprint(
 def nearby():
     """Nearby shops page."""
 
-    r = requests.get("http://localhost:5000/api/v1/shops") # FIXME prepare an url independant from localhost
+    r = requests.get(
+        "http://localhost:5000/api/v1/shops"
+    )  # FIXME prepare an url independant from localhost
     all_shops = r.json()
 
     return render_template("nearby.html", title="Nearby shops", all_shops=all_shops)
