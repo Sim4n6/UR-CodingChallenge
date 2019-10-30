@@ -5,7 +5,8 @@ A Python project for UnitedRemote Coding Challenge.
 
 Import : 
 - dump-shops/shops/ *shops.bson* : a provided list of shops details in bson format.
-- dump-shops/shops/ *import.py* : a py script to import the list of shops into a postgresql db. 
+- dump-shops/shops/ *import.py* : a py script to import the list of shops into a postgresql db.
+- To run this file : ```python -m importing.importing.py``` 
 
 Config files :
 - *Pipfile* and *Pipfile.lock* : files of the pkg and virtual env management tool 'Pipenv'.
