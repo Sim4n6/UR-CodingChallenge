@@ -3,9 +3,9 @@ from flask import jsonify, make_response, abort
 
 from ur_cc_app import db
 from ur_cc_app.models import (
-    Shops,
+    Shop,
     shop_schema,
-)  # FIXME name of SHops --> Shop everywhere
+)
 
 # Blueprint Configuration
 api_bp = Blueprint(
@@ -25,9 +25,9 @@ def listAllShops():
     print(f" limit to : {limit} -- sorting {sortByDistance}")
 
     if limit != None:
-        results = Shops.query.limit(limit)
+        results = Shop.query.limit(limit)
     else:
-        results = Shops.query.all()
+        results = Shop.query.all()
 
     if results != None:
         return jsonify(shop_schema.dump(results)), 200

@@ -2,7 +2,10 @@ from ur_cc_app import db
 from ur_cc_app import ma
 
 
-class Shops(db.Model):
+class Shop(db.Model):
+
+    __tablename__ = "shops"
+
     id = db.Column(db.Integer, primary_key=True)
     picture = db.Column(db.String(200), nullable=False)
     name = db.Column(db.String(100), nullable=False)
