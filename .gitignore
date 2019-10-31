@@ -105,4 +105,3 @@ venv.bak/
 
 # vscode
 .vscode/
-ur_cc_app/db.sqlite

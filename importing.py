@@ -1,7 +1,7 @@
 import os
 
 import bson
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, ForeignKey
 from sqlalchemy.sql import text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Numeric
@@ -26,7 +26,7 @@ session = Session()
 # Declare mapping
 Base = declarative_base()
 
-# model
+# models
 class Shop(Base):
     __tablename__ = "shops"
 
@@ -42,6 +42,28 @@ class Shop(Base):
     def __repr__(self):
         return f"<Shop {name}>"
 
+
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(100))
+    email = Column(String(100))
+    password = Column(String(150))
+
+    def __repr__(self):
+        return f"<User {name}>"
+
+
+# class User_Shop(Base):
+#     __tablename__ = "users_shops"
+
+#     id = Column(Integer, primary_key=True)
+#     user_id = Column(Integer, ForeignKey('users.id'))
+#     shop_id = Column(Integer, ForeignKey('shops.id'))
+
+#     def __repr__(self):
+#         return f"<User_id {user_id} -- Shop_id {shop_id}>"
 
 # create schema
 Base.metadata.create_all(engine)
@@ -86,4 +108,17 @@ for i, entity in enumerate(bson.decode_file_iter(f)):
         print(f"----------------> found a duplicate shop : {result}")
 
 f.close()
+
+# add some fake users
+user1 = User(
+    name="Simohamed",
+    email="simohamed@gmail.com",
+    password="DFGD5F4GD5F4G65D4FG564321RE789",
+)
+user2 = User(
+    name="Karim", email="karim@gmail.com", password="EZARAZERAZERZAERAZER0198709878979"
+)
+session.add_all([user1, user2])
+session.commit()
+
 session.close()
