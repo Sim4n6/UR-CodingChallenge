@@ -16,7 +16,7 @@ class ProdConfig(Config):
 
 class DevConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = f"sqlite:///{os.path.join( basedir , 'db.sqlite' )}"
+    SQLALCHEMY_DATABASE_URI = f"sqlite:///{os.path.join( basedir , 'db.sqlite3' )}"
     SECRET_KEY = "#l9@)_DF6451FS165"
 
 
