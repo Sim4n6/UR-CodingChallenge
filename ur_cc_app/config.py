@@ -1,5 +1,6 @@
 import os
 
+# the directory of config.py file
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
