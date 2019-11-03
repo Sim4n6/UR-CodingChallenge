@@ -1,6 +1,9 @@
 from flask import Blueprint, request
 from flask import jsonify, make_response, abort
 
+from sqlalchemy.exc import OperationalError
+from sqlalchemy.exc import SQLAlchemyError
+
 from ur_cc_app import db
 from ur_cc_app.models import (
     Shop,
@@ -22,17 +25,23 @@ def listAllShops():
 
     limit = request.args.get("limit")
     sortByDistance = request.args.get("sortByDistance")
-    print(f" limit to : {limit} -- sorting {sortByDistance}")
+    print(f">>> Limit shops to : {limit} -- isSortedBy distance: {sortByDistance}")
 
-    if limit != None:
-        results = Shop.query.limit(limit)
-    else:
-        results = Shop.query.all()
+    try:
+        if limit != None:
+            results = Shop.query.limit(limit)
+        else:
+            results = Shop.query.all()
 
-    if results != None:
-        return jsonify(shop_schema.dump(results)), 200
-    else:
-        abort(400)  # Bad request
+        if results != None:
+            return jsonify(shop_schema.dump(results)), 200
+        else:
+            return jsonify({"description": "Bad request."}), 400
+
+    except OperationalError as e:
+        return jsonify({"description": "Wraps a DB-API OperationalError."}), 500
+    except SQLAlchemyError as e:
+        return jsonify({"description": "SQLAlchemy Error ..."}), 500
 
 
 @api_bp.route("/shops/<int:shopId>", methods=["POST"])
