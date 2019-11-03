@@ -17,7 +17,7 @@ def create_app():
 
     # load the environment configs using FLASK_CONFIG otherwise load Development.
     app.config.from_object(config_choices[os.getenv("FLASK_CONFIG") or "Development"])
-    print(app.config)
+    # print(app.config)
 
     db.init_app(app)
     ma.init_app(app)
