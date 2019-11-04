@@ -1,8 +1,8 @@
 from flask import Blueprint, request
 from flask import jsonify, make_response, abort
 
-from sqlalchemy.exc import OperationalError
-from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.exc import OperationalError, SQLAlchemyError
+from sqlalchemy.orm import sessionmaker
 
 from ur_cc_app import db
 from ur_cc_app.models import (
@@ -67,7 +67,9 @@ def listAllPreferredShops():
 
     try:
         if limit != None:
-            associations = User_Shop.query.filter_by(user_id=9).limit(limit)
+            associations = User_Shop.query.filter_by(user_id=9).limit(
+                limit
+            )  # 9 is for temporary user
         else:
             associations = User_Shop.query.filter_by(user_id=9).all()
         results = [
@@ -88,7 +90,24 @@ def listAllPreferredShops():
 
 @api_bp.route("/preferred_shops/<int:shopId>", methods=["POST"])
 def addPreferredShop(shopId):
-    return "addPreferredShop"
+    try:
+        shop = Shop.query.filter_by(id=shopId).first()
+        # check whether User_Shop is already in association table
+        association = (
+            User_Shop.query.filter_by(user_id=9).filter_by(shop_id=shop.id).first()
+        )
+        if association is None:
+            association = User_Shop(user_id=9, shop_id=shop.id)
+            db.session.add(association)
+            db.session.commit()
+            return jsonify({"description": "Created."}), 201
+        else:
+            return jsonify({"description": "No response."}), 204
+
+    except OperationalError as e:
+        return jsonify({"description": "Wraps a DB-API OperationalError."}), 500
+    except SQLAlchemyError as e:
+        return jsonify({"description": "SQLAlchemy Error ..."}), 500
 
 
 @api_bp.route("/preferred_shops/<int:shopId>", methods=["PUT"])
@@ -98,4 +117,20 @@ def updatePreferredShop(shopId):
 
 @api_bp.route("/preferred_shops/<int:shopId>", methods=["DELETE"])
 def removePreferredShop(shopId):
-    return "removePreferredShop"
+    try:
+        shop = Shop.query.filter_by(id=shopId).first()
+        # check whether User_Shop is already in association table
+        association = (
+            User_Shop.query.filter_by(user_id=9).filter_by(shop_id=shop.id).first()
+        )
+        if association is not None:
+            db.session.delete(association)
+            db.session.commit()
+            return jsonify({"description": "Deleted."}), 200
+        else:
+            return jsonify({"description": "No response."}), 204
+
+    except OperationalError as e:
+        return jsonify({"description": "Wraps a DB-API OperationalError."}), 500
+    except SQLAlchemyError as e:
+        return jsonify({"description": "SQLAlchemy Error ..."}), 500
