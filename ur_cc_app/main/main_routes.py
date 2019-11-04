@@ -37,4 +37,22 @@ def nearby():
 @main_bp.route("/preferred", methods=["GET"])
 def preferred():
     """Preferred shops view function."""
-    return render_template("preferred.html", title="Preferred shops")
+
+    try:
+        all_preferred_shops = []
+        # FIXME prepare an url independant from localhost
+        payload = {"limit": 5, "sortByDistance": 1}
+        r = requests.get("http://localhost:5000/api/v1/preferred_shops", params=payload)
+        if r.status_code == 200:
+            all_preferred_shops = r.json()
+        else:
+            abort(r.status_code, r.json().get("description"))
+
+    except RequestException as e:
+        abort(500, str(e))
+    else:
+        return render_template(
+            "preferred.html",
+            title="Preferred shops",
+            all_preferred_shops=all_preferred_shops,
+        )

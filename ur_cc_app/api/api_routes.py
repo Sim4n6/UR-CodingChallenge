@@ -7,7 +7,11 @@ from sqlalchemy.exc import SQLAlchemyError
 from ur_cc_app import db
 from ur_cc_app.models import (
     Shop,
+    User,
+    User_Shop,
     shop_schema,
+    user_schema,
+    user_shop_schema,
 )
 
 # Blueprint Configuration
@@ -56,7 +60,30 @@ def updateShop(shopId):
 
 @api_bp.route("/preferred_shops", methods=["GET"])
 def listAllPreferredShops():
-    return "listAllPreferredShops"
+
+    limit = request.args.get("limit")
+    sortByDistance = request.args.get("sortByDistance")
+    print(f">>> Limit shops to : {limit} -- isSortedBy distance: {sortByDistance}")
+
+    try:
+        if limit != None:
+            associations = User_Shop.query.filter_by(user_id=9).limit(limit)
+        else:
+            associations = User_Shop.query.filter_by(user_id=9).all()
+        results = [
+            Shop.query.filter_by(id=association.shop_id).first()
+            for association in associations
+        ]
+
+        if results != None:
+            return jsonify(shop_schema.dump(results)), 200
+        else:
+            return jsonify({"description": "Bad request."}), 400
+
+    except OperationalError as e:
+        return jsonify({"description": "Wraps a DB-API OperationalError."}), 500
+    except SQLAlchemyError as e:
+        return jsonify({"description": "SQLAlchemy Error ..."}), 500
 
 
 @api_bp.route("/preferred_shops/<int:shopId>", methods=["POST"])
