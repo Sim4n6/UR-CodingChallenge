@@ -5,7 +5,7 @@ from sqlalchemy import create_engine, ForeignKey
 from sqlalchemy.sql import text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Numeric
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, relationship
 
 
 from ur_cc_app import config
@@ -55,15 +55,18 @@ class User(Base):
         return f"<User {name}>"
 
 
-# class User_Shop(Base):
-#     __tablename__ = "users_shops"
+class User_Shop(Base):
+    __tablename__ = "users_shops"
 
-#     id = Column(Integer, primary_key=True)
-#     user_id = Column(Integer, ForeignKey('users.id'))
-#     shop_id = Column(Integer, ForeignKey('shops.id'))
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    shop_id = Column(Integer, ForeignKey("shops.id"))
+    user = relationship("User", backref="shops")
+    shop = relationship("Shop", backref="users")
 
-#     def __repr__(self):
-#         return f"<User_id {user_id} -- Shop_id {shop_id}>"
+    def __repr__(self):
+        return f"<User_id {user_id} <--> Shop_id {shop_id}>"
+
 
 # create schema
 Base.metadata.create_all(engine)
@@ -119,6 +122,14 @@ user2 = User(
     name="Karim", email="karim@gmail.com", password="EZARAZERAZERZAERAZER0198709878979"
 )
 session.add_all([user1, user2])
+session.commit()
+
+# add some associations btw Shops and Users
+shop1 = session.query(Shop).filter(Shop.name == "Adornica").one_or_none()
+shop2 = session.query(Shop).filter(Shop.name == "Petigems").one_or_none()
+user_shop_1 = User_Shop(user_id=user1.id, shop_id=shop1.id)
+user_shop_2 = User_Shop(user_id=user2.id, shop_id=shop2.id)
+session.add_all([user_shop_1, user_shop_2])
 session.commit()
 
 session.close()
