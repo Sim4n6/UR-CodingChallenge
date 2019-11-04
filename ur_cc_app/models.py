@@ -34,3 +34,44 @@ class ShopsSchema(ma.Schema):
 
 
 shop_schema = ShopsSchema(many=True)
+
+
+class User(db.Model):
+    __tablename__ = "users"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    email = db.Column(db.String(100))
+    password = db.Column(db.String(150))
+
+    def __repr__(self):
+        return f"<User {self.name}>"
+
+
+class UsersSchema(ma.Schema):
+    class Meta:
+        fields = ("id", "name", "email", "password")
+
+
+user_schema = UsersSchema(many=True)
+
+
+class User_Shop(db.Model):
+    __tablename__ = "users_shops"
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    shop_id = db.Column(db.Integer, db.ForeignKey("shops.id"))
+    user = db.relationship("User", backref=db.backref("shops"))
+    shop = db.relationship("Shop", backref=db.backref("users"))
+
+    def __repr__(self):
+        return f"<User_id {self.user_id} <--> Shop_id {self.shop_id}>"
+
+
+class User_Shop_Schema(ma.Schema):
+    class Meta:
+        fields = ("id", "user_id", "shop_id")
+
+
+user_shop_schema = User_Shop_Schema(many=True)
