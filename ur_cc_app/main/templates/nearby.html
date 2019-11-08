@@ -7,13 +7,13 @@
 
     <div class="row justify-content-md-center">
     {% for shop in all_shops %}
-        <div class="card" style="width: 200px; margin: 5px;">
+        <div class="card" id="{{ shop.id }}">
             <div class="card-body">
                 <h6 class="card-title">{{ shop.name }}</h6>
-                <img src="{{ shop.picture }}" class="card-img-top" alt="..." style="padding-bottom: 10px;">
+                <img src="{{ shop.picture }}" class="card-img-top" alt="..." >
                 <div>
-                <button type="button" class="btn btn-danger btn-sm" style="width: 70px;">Dislike</button>
-                <button type="button" class="btn btn-success btn-sm" style="width: 70px;">Like</button>
+                <button type="button" class="btn btn-danger btn-sm" style="width: 70px;" onclick="dislike(this)">Dislike</button>
+                <button type="button" class="btn btn-success btn-sm" style="width: 70px;" onclick="like(this)">Like</button>
             </div>
             </div>
         </div>
