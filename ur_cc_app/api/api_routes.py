@@ -25,14 +25,20 @@ api_bp = Blueprint(
 
 
 @api_bp.route("/shops", methods=["GET"])
-def listAllShops():
+def listAllShops(limit=None, sortByDistance=1):
 
-    limit = request.args.get("limit")
-    sortByDistance = request.args.get("sortByDistance")
+    limit_arg = request.args.get("limit")
+    sortByDistance_arg = request.args.get("sortByDistance")
+
+    print(
+        f">>> Limit shops to : {limit_arg} -- isSortedBy distance: {sortByDistance_arg}"
+    )
     print(f">>> Limit shops to : {limit} -- isSortedBy distance: {sortByDistance}")
 
     try:
-        if limit != None:
+        if limit_arg != None:
+            results = Shop.query.limit(limit_arg)
+        elif limit != None:
             results = Shop.query.limit(limit)
         else:
             results = Shop.query.all()
@@ -59,19 +65,14 @@ def updateShop(shopId):
 
 
 @api_bp.route("/preferred_shops", methods=["GET"])
-def listAllPreferredShops():
+def listAllPreferredShops(sortByDistance=1):
 
-    limit = request.args.get("limit")
     sortByDistance = request.args.get("sortByDistance")
-    print(f">>> Limit shops to : {limit} -- isSortedBy distance: {sortByDistance}")
+    print(f">>> isSortedBy distance: {sortByDistance}")
 
     try:
-        if limit != None:
-            associations = User_Shop.query.filter_by(user_id=9).limit(
-                limit
-            )  # 9 is for temporary user
-        else:
-            associations = User_Shop.query.filter_by(user_id=9).all()
+
+        associations = User_Shop.query.filter_by(user_id=9).all()
         results = [
             Shop.query.filter_by(id=association.shop_id).first()
             for association in associations
