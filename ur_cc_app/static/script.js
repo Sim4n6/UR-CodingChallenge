@@ -3,7 +3,6 @@
 function dislike(dislike_btn) {
     // mute btn like 
     dislike_btn.disabled = true;
-    dislike_btn.nextSibling.disabled = false;
 
     // get id of current shop
     let shopId = dislike_btn.parentNode.parentNode.parentNode.id;
@@ -16,9 +15,11 @@ function dislike(dislike_btn) {
 
 function like(like_btn) {
     
-    // mute btn like 
+    // mute btn like
     like_btn.disabled = true;
-    like_btn.previousSibling.disabled = false;
+
+    // make disappear liked shop
+    like_btn.parentNode.parentNode.parentNode.style.display = 'none'; 
 
     // get id of current shop
     let shopId = like_btn.parentNode.parentNode.parentNode.id;
