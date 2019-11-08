@@ -36,4 +36,8 @@ def create_app():
 
     app.register_blueprint(errors_routes.error_bp)
 
+    from ur_cc_app.auth import auth_routes
+
+    app.register_blueprint(auth_routes.auth_bp)
+
     return app
