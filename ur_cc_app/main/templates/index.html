@@ -1,0 +1,15 @@
+<!-- index.html -->
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>{{ title }}</h1>
+
+    <div class="row justify-content-md-center">
+    <a href="{{ url_for('auth_bp.signup')}}">Sign UP</a> <br>
+    <a href="{{ url_for('auth_bp.signin')}}">Sign IN</a>
+    
+    </div>
+
+</div>
+{% endblock content %}

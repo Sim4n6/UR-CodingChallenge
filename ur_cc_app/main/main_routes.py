@@ -17,7 +17,7 @@ main_bp = Blueprint(
 @main_bp.route("/index")
 def index():
     """ Index view function """
-    abort(404)
+    return render_template("index.html", title="Index web page")
 
 
 @main_bp.route("/nearby", methods=["GET"])
