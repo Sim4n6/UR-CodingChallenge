@@ -1,7 +1,7 @@
 # UR-CodingChallenge
-A Python project for UnitedRemote Coding Challenge.
+A Python project for UnitedRemote Coding Challenge <https://github.com/hiddenfounders/web-coding-challenge>
 
-## Description of files 
+## Files description
 
 #### Import : 
 - importing/ *shops.bson* : a provided list of shops details in bson format.
@@ -15,14 +15,3 @@ A Python project for UnitedRemote Coding Challenge.
 
 #### Webapp :
  - *run_app.py* : a py script to run the whole web app.
-
-#### Samples of commands
-
-```
-pipenv run black . # to code format using black, all source files located in "."
-```
-
-```
-# Set up of pre-commit and pre-push hooks once
-pipenv run pre-commit install -t pre-commit
-```
