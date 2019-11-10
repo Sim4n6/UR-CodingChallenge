@@ -2,6 +2,8 @@ from flask import Blueprint, render_template, request
 
 from ur_cc_app.api.api_routes import listAllPreferredShops, listAllShops
 
+from ur_cc_app.auth import login_required
+
 # Blueprint Configuration
 main_bp = Blueprint(
     "main_bp",
@@ -12,7 +14,6 @@ main_bp = Blueprint(
 )
 
 
-@main_bp.route("/")
 @main_bp.route("/index")
 def index():
     """ Index view function """
@@ -20,6 +21,7 @@ def index():
 
 
 @main_bp.route("/nearby", methods=["GET"])
+@login_required
 def nearby():
     """Nearby shops view function."""
 
@@ -38,6 +40,7 @@ def nearby():
 
 
 @main_bp.route("/preferred", methods=["GET"])
+@login_required
 def preferred():
     """Preferred shops view function."""
 

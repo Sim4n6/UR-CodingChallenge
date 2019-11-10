@@ -19,6 +19,7 @@
         <a class="navbar-brand" href="{{ url_for('main_bp.index') }}">UR-CC</a>
 
         <!-- Links -->
+        {% if g.user %}
         <ul class="navbar-nav">
             <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('main_bp.nearby') }}">Nearby shops</a>
@@ -26,7 +27,20 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('main_bp.preferred') }}">Preferred shops</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('auth_bp.logout') }}">Logout {{ g.user.name }}</a>
+            </li>
         </ul>
+        {% else %}
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('auth_bp.login') }}">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('auth_bp.registration') }}">Register</a>
+            </li>
+        </ul>       
+        {% endif %}
     </div>
 </nav>
 
