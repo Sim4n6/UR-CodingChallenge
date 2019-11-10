@@ -30,15 +30,20 @@ def signin():
         salt = bcrypt.gensalt()
         hashed = bcrypt.hashpw(password.encode("utf-8"), salt)
 
-        #  TODO check whether it is already on the database
+        # check whether the user is already on the database
+        result = User.query.filter_by(email=email).one_or_none()
+        if result is None:
+            # add the User to the db
+            current_user = User(name=name, email=email, password=hashed)
+            db.session.add(current_user)
+            db.session.commit()
 
-        # add the User to the db
-        current_user = User(name=name, email=email, password=hashed,)
-        db.session.add(current_user)
-        db.session.commit()
+            flash("Registration was successful, you can login now.", "success")
+            return redirect(url_for("auth_bp.signup"))
+        else:
+            flash(f"User with the same email as {email} already exist.", "warning")
+            return redirect(url_for("auth_bp.signin"))
 
-        flash("Registration was successful, you can login now.", "success")
-        return redirect(url_for("auth.signup"))
     return render_template("signin.html", title=title, form=form)
 
 
@@ -52,14 +57,18 @@ def signup():
         password = form.password.data
 
         # get the corresponding user based on the email
-        user = User.query.filter_by(email=email).first()
-
-        #  compare the typed password and the hashed stored password (user.password)
-        if bcrypt.checkpw(password.encode("utf-8"), user.password):
-            flash("Credentials are correct, you are now logged in.", "success")
-            return redirect("/success")
+        user = User.query.filter_by(email=email).one_or_none()
+        # if email not in the db
+        if user is None:
+            flash("User not registred yet. Please register.", "warning")
+            redirect(url_for("auth_bp.signin"))
         else:
-            flash("Credentials are incorrect. Please try again.", "danger")
-            return redirect(url_for("auth_bp.signup"))
+            #  compare the typed password and the hashed stored password (user.password)
+            if bcrypt.checkpw(password.encode("utf-8"), user.password):
+                flash("Credentials are correct, you are now logged in.", "success")
+                return redirect("/success")
+            else:
+                flash("Credentials are incorrect. Please try again.", "danger")
+                return redirect(url_for("auth_bp.signup"))
 
     return render_template("signup.html", title=title, form=form)
