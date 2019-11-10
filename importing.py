@@ -1,4 +1,5 @@
 import os
+import bcrypt
 
 import bson
 from sqlalchemy import create_engine, ForeignKey
@@ -112,15 +113,16 @@ for i, entity in enumerate(bson.decode_file_iter(f)):
 
 f.close()
 
-# add some fake users
-user1 = User(
-    name="Simohamed",
-    email="simohamed@gmail.com",
-    password="DFGD5F4GD5F4G65D4FG564321RE789",
-)
-user2 = User(
-    name="Karim", email="karim@gmail.com", password="EZARAZERAZERZAERAZER0198709878979"
-)
+# add some fake users: Password for sim4n6@gmail.com is 123456789
+# password for account karim@gmail is 1234567
+salt = bcrypt.gensalt()
+hashed = bcrypt.hashpw("123456789".encode("utf-8"), salt)
+user1 = User(name="Simohamed", email="sim4n6@gmail.com", password=hashed)
+
+salt = bcrypt.gensalt()
+hashed = bcrypt.hashpw("1234567".encode("utf-8"), salt)
+user2 = User(name="Karim", email="karim@gmail.com", password=hashed)
+
 session.add_all([user1, user2])
 session.commit()
 
