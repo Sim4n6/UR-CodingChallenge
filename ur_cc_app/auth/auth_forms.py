@@ -4,6 +4,7 @@ from wtforms.validators import Email, Length, EqualTo
 
 
 class SignInForm(FlaskForm):
+    name = StringField("Name", validators=[Length(min=2, max=100)])
     email = StringField("Email", validators=[Email()])
     password = PasswordField("Password", validators=[Length(min=6, max=120)])
     confirm_password = PasswordField(
