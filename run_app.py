@@ -1,15 +1,14 @@
-import os
-
-from flask import Blueprint, Flask, jsonify, make_response, render_template, request
+from flask import redirect, url_for
 
 from ur_cc_app import create_app
 
 app = create_app()
 
 
-def main():
-    app.run()
+@app.route("/")
+def index():
+    return redirect(url_for("main_bp.index"))
 
 
 if __name__ == "__main__":
-    main()
+    app.run()
