@@ -2,9 +2,8 @@ import bcrypt
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 
 from ur_cc_app import db
+from ur_cc_app.auth.auth_forms import LoginForm, RegistrationForm
 from ur_cc_app.models import User
-
-from ur_cc_app.auth.auth_forms import RegistrationForm, LoginForm
 
 # Blueprint Configuration
 auth_bp = Blueprint(

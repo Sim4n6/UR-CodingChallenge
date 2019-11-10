@@ -1,13 +1,10 @@
 import os
+
 import bcrypt
-
 import bson
-from sqlalchemy import create_engine, ForeignKey
-from sqlalchemy.sql import text
+from sqlalchemy import Column, ForeignKey, Integer, Numeric, String, create_engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, Numeric
-from sqlalchemy.orm import sessionmaker, relationship
-
+from sqlalchemy.orm import relationship, sessionmaker
 
 from ur_cc_app import config
 
@@ -15,9 +12,8 @@ from ur_cc_app import config
 current_config = vars(config.config_choices[os.getenv("FLASK_CONFIG") or "Development"])
 print(current_config)
 
-basedir = os.path.abspath(
-    os.path.dirname(__file__)
-)  # TODO switch to pathlib becuz it is recommened.
+# TODO switch to pathlib becuz it is recommened.
+basedir = os.path.abspath(os.path.dirname(__file__))
 
 # create an engine to handle connection to DB on the remote server
 engine = create_engine(current_config.get("SQLALCHEMY_DATABASE_URI"), echo=True)

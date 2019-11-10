@@ -1,7 +1,6 @@
-from flask import Blueprint, request, abort
-from flask import render_template
+from flask import Blueprint, render_template, request
 
-from ..api import api_routes
+from ur_cc_app.api.api_routes import listAllPreferredShops, listAllShops
 
 # Blueprint Configuration
 main_bp = Blueprint(
@@ -25,11 +24,11 @@ def nearby():
     """Nearby shops view function."""
 
     # get all shops
-    response = api_routes.listAllShops(limit=10, sortByDistance=1)
+    response = listAllShops(limit=10, sortByDistance=1)
     all_shops = response[0].get_json()
 
     # get all preferred shops
-    response = api_routes.listAllPreferredShops(sortByDistance=1)
+    response = listAllPreferredShops(sortByDistance=1)
     all_preferred_shops = response[0].get_json()
 
     # keep only those shops that are not in preferred shops
@@ -42,7 +41,7 @@ def nearby():
 def preferred():
     """Preferred shops view function."""
 
-    response = api_routes.listAllPreferredShops(sortByDistance=1)
+    response = listAllPreferredShops(sortByDistance=1)
     all_preferred_shops = response[0].get_json()
     return render_template(
         "preferred.html",

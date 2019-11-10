@@ -1,18 +1,9 @@
-from flask import Blueprint, request
-from flask import jsonify, make_response, abort
-
+from flask import Blueprint, jsonify, request
 from sqlalchemy.exc import OperationalError, SQLAlchemyError
 from sqlalchemy.orm import sessionmaker
 
 from ur_cc_app import db
-from ur_cc_app.models import (
-    Shop,
-    User,
-    User_Shop,
-    shop_schema,
-    user_schema,
-    user_shop_schema,
-)
+from ur_cc_app.models import Shop, User, User_Shop, shop_schema
 
 # Blueprint Configuration
 api_bp = Blueprint(
