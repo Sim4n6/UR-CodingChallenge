@@ -16,6 +16,7 @@ flask-bootstrap4 = "*"
 flask-sqlalchemy = "*"
 flask-marshmallow = "*"
 marshmallow-sqlalchemy = "*"
+flask-wtf = "*"
 
 [requires]
 python_version = "3.7"
