@@ -13,7 +13,7 @@ main_bp = Blueprint(
 )
 
 
-@main_bp.route("/")
+@main_bp.route("/")  #  FIXME THIS ENDPOINT is /main/ not /
 @main_bp.route("/index")
 def index():
     """ Index view function """
