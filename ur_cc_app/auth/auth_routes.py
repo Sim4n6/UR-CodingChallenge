@@ -1,5 +1,14 @@
 import bcrypt
-from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask import (
+    Blueprint,
+    flash,
+    redirect,
+    render_template,
+    request,
+    url_for,
+    session,
+    g,
+)
 
 from ur_cc_app import db
 from ur_cc_app.auth.auth_forms import LoginForm, RegistrationForm
@@ -41,7 +50,7 @@ def registration():
             return redirect(url_for("auth_bp.login"))
         else:
             flash(
-                f"User with the same email as {email} already exist. You can login if it's you.",
+                f"User with the same email as {email} already exists. You can login if it's you.",
                 "warning",
             )
             return redirect(url_for("auth_bp.login"))
@@ -68,9 +77,27 @@ def login():
             #  compare the typed password and the hashed stored password (user.password)
             if bcrypt.checkpw(password.encode("utf-8"), user.password):
                 flash("Credentials are correct, you are now logged in.", "success")
-                return redirect("/success")
+                session["username"] = {
+                    "name": user.name,
+                    "email": email,
+                }  # FIXME be careful about this pitfull.
+                return redirect(url_for("landing"))
             else:
                 flash("Credentials are incorrect. Please try again.", "danger")
                 return redirect(url_for("auth_bp.login"))
 
     return render_template("login.html", title=title, form=form)
+
+
+@auth_bp.route("/logout", methods=["GET"])
+def logout():
+    flash("You have been logged out.", "warning")
+    session.pop("username", None)
+    return redirect(url_for("auth_bp.login"))
+
+
+@auth_bp.before_app_request
+def before_request():
+    g.user = None
+    if "username" in session:
+        g.user = session["username"]
