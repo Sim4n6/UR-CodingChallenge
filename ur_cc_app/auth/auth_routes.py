@@ -4,7 +4,7 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 from ur_cc_app import db
 from ur_cc_app.models import User
 
-from ur_cc_app.auth.auth_forms import SignInForm, SignUpForm
+from ur_cc_app.auth.auth_forms import RegistrationForm, LoginForm
 
 # Blueprint Configuration
 auth_bp = Blueprint(
@@ -16,10 +16,10 @@ auth_bp = Blueprint(
 )
 
 
-@auth_bp.route("/signin", methods=["GET", "POST"])
-def signin():
-    title = "Sign in"
-    form = SignInForm()
+@auth_bp.route("/registration", methods=["GET", "POST"])
+def registration():
+    title = "Registration"
+    form = RegistrationForm()
     if form.validate_on_submit():
         # get typed credentials
         name = form.name.data
@@ -39,18 +39,21 @@ def signin():
             db.session.commit()
 
             flash("Registration was successful, you can login now.", "success")
-            return redirect(url_for("auth_bp.signup"))
+            return redirect(url_for("auth_bp.login"))
         else:
-            flash(f"User with the same email as {email} already exist.", "warning")
-            return redirect(url_for("auth_bp.signin"))
+            flash(
+                f"User with the same email as {email} already exist. You can login if it's you.",
+                "warning",
+            )
+            return redirect(url_for("auth_bp.login"))
 
-    return render_template("signin.html", title=title, form=form)
+    return render_template("registration.html", title=title, form=form)
 
 
-@auth_bp.route("/signup", methods=["GET", "POST"])
-def signup():
-    title = "Sign up"
-    form = SignUpForm()
+@auth_bp.route("/login", methods=["GET", "POST"])
+def login():
+    title = "Log in"
+    form = LoginForm(request.form)
     if form.validate_on_submit():
         # get typed data
         email = form.email.data
@@ -61,7 +64,7 @@ def signup():
         # if email not in the db
         if user is None:
             flash("User not registred yet. Please register.", "warning")
-            redirect(url_for("auth_bp.signin"))
+            redirect(url_for("auth_bp.registration"))
         else:
             #  compare the typed password and the hashed stored password (user.password)
             if bcrypt.checkpw(password.encode("utf-8"), user.password):
@@ -69,6 +72,6 @@ def signup():
                 return redirect("/success")
             else:
                 flash("Credentials are incorrect. Please try again.", "danger")
-                return redirect(url_for("auth_bp.signup"))
+                return redirect(url_for("auth_bp.login"))
 
-    return render_template("signup.html", title=title, form=form)
+    return render_template("login.html", title=title, form=form)
