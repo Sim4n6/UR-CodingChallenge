@@ -17,6 +17,7 @@ flask-sqlalchemy = "*"
 flask-marshmallow = "*"
 marshmallow-sqlalchemy = "*"
 flask-wtf = "*"
+bcrypt = "*"
 
 [requires]
 python_version = "3.7"
