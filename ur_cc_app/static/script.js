@@ -5,7 +5,7 @@ function dislike(dislike_btn) {
     dislike_btn.disabled = true;
 
     // get id of current shop
-    let shopId = dislike_btn.parentNode.parentNode.parentNode.id;
+    let shopId = dislike_btn.closest("div.card").id
 
     // send async post the shop to the api side 
     const xhr = new XMLHttpRequest();
@@ -22,7 +22,7 @@ function like(like_btn) {
     like_btn.parentNode.parentNode.parentNode.style.display = 'none'; 
 
     // get id of current shop
-    let shopId = like_btn.parentNode.parentNode.parentNode.id;
+    let shopId = like_btn.closest("div.card").id
 
     // send async post the shop to the api side 
     const xhr = new XMLHttpRequest();
@@ -35,7 +35,7 @@ function removePreferred(remove_btn) {
     remove_btn.parentNode.parentNode.parentNode.style.display = 'none';
 
     // get id of current shop
-    let shopId = remove_btn.parentNode.parentNode.parentNode.id;
+    let shopId = remove_btn.closest("div.card").id
 
     // send async delete to the api side 
     const xhr = new XMLHttpRequest();
