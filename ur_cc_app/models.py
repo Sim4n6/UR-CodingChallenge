@@ -1,5 +1,6 @@
-from ur_cc_app import db
-from ur_cc_app import ma
+from haversine import haversine
+
+from ur_cc_app import db, ma
 
 
 class Shop(db.Model):
@@ -14,6 +15,13 @@ class Shop(db.Model):
     coord_type = db.Column(db.String(50), nullable=False)
     coordinate_lat = db.Column(db.Float, nullable=False)
     coordinate_long = db.Column(db.Float, nullable=False)
+
+    def haversine(self, coord_user_lat, coord_user_lng):
+        # haversine compute the distsance btw user location and shop location
+        return haversine(
+            (self.coordinate_lat, self.coordinate_long),
+            (coord_user_lat, coord_user_lng),
+        )
 
     def __repr__(self):
         return f"<Shop {self.name}>"

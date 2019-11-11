@@ -17,29 +17,19 @@ api_bp = Blueprint(
 
 
 @api_bp.route("/shops", methods=["GET"])
-def listAllShops(limit=None, sortByDistance=False):
+def listAllShops(sortByDistance=False):
 
-    limit_arg = request.args.get("limit")
     sortByDistance_arg = request.args.get("sortByDistance")
 
-    print(
-        f">>> Limit shops to : {limit_arg} -- isSortedBy distance: {sortByDistance_arg}"
-    )
-    print(f">>> Limit shops to : {limit} -- isSortedBy distance: {sortByDistance}")
-
     try:
-        if limit_arg != None:
-            results = Shop.query.limit(limit_arg)
-        elif limit != None:
-            results = Shop.query.limit(limit)
+        if sortByDistance:
+            geoip_data = simple_geoip.get_geoip_data()
+            user_lat = geoip_data.get("location").get("lat")
+            user_lng = geoip_data.get("location").get("lng")
+            results = Shop.query.all()
+            results.sort(key=lambda x: x.haversine(user_lat, user_lng))
         else:
-            if sortByDistance:
-                geoip_data = simple_geoip.get_geoip_data()
-                user_lat = geoip_data.location.get("lat")
-                user_lng = geoip_data.location.get("lng")
-                results = Shop.query.order_by(Shop.name).all()
-            else:
-                results = Shop.query.all()
+            results = Shop.query.all()
 
         if results != None:
             return jsonify(shop_schema.dump(results)), 200
