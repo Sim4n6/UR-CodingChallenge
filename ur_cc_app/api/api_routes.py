@@ -23,11 +23,13 @@ def listAllShops(sortByDistance=False):
 
     try:
         if sortByDistance:
-            geoip_data = simple_geoip.get_geoip_data()
-            user_lat = geoip_data.get("location").get("lat")
-            user_lng = geoip_data.get("location").get("lng")
             results = Shop.query.all()
-            results.sort(key=lambda x: x.haversine(user_lat, user_lng))
+            geoip_data = simple_geoip.get_geoip_data()
+            location = geoip_data.get("location")
+            if location != None:
+                user_lat = location.get("lat")
+                user_lng = location.get("lng")
+                results.sort(key=lambda x: x.haversine(user_lat, user_lng))
         else:
             results = Shop.query.all()
 
