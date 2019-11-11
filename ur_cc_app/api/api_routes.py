@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, g
 from sqlalchemy.exc import OperationalError, SQLAlchemyError
 from sqlalchemy.orm import sessionmaker
 
@@ -58,17 +58,18 @@ def updateShop(shopId):
 def listAllPreferredShops():
 
     try:
+        user = User.query.filter_by(email=g.user["email"]).one_or_none()
+        if user:
+            associations = User_Shop.query.filter_by(user_id=user.id).all()
+            results = [
+                Shop.query.filter_by(id=association.shop_id).first()
+                for association in associations
+            ]
 
-        associations = User_Shop.query.filter_by(user_id=9).all()
-        results = [
-            Shop.query.filter_by(id=association.shop_id).first()
-            for association in associations
-        ]
-
-        if results != None:
-            return jsonify(shop_schema.dump(results)), 200
-        else:
-            return jsonify({"description": "Bad request."}), 400
+            if results != None:
+                return jsonify(shop_schema.dump(results)), 200
+            else:
+                return jsonify({"description": "Bad request."}), 400
 
     except OperationalError as e:
         return jsonify({"description": "Wraps a DB-API OperationalError."}), 500
@@ -79,18 +80,22 @@ def listAllPreferredShops():
 @api_bp.route("/preferred_shops/<int:shopId>", methods=["POST"])
 def addPreferredShop(shopId):
     try:
-        shop = Shop.query.filter_by(id=shopId).first()
-        # check whether User_Shop is already in association table
-        association = (
-            User_Shop.query.filter_by(user_id=9).filter_by(shop_id=shop.id).first()
-        )
-        if association is None:
-            association = User_Shop(user_id=9, shop_id=shop.id)
-            db.session.add(association)
-            db.session.commit()
-            return jsonify({"description": "Created."}), 201
-        else:
-            return jsonify({"description": "No response."}), 204
+        user = User.query.filter_by(email=g.user["email"]).one_or_none()
+        if user:
+            shop = Shop.query.filter_by(id=shopId).first()
+            # check whether User_Shop is already in association table
+            association = (
+                User_Shop.query.filter_by(user_id=user.id)
+                .filter_by(shop_id=shop.id)
+                .first()
+            )
+            if association is None:
+                association = User_Shop(user_id=user.id, shop_id=shop.id)
+                db.session.add(association)
+                db.session.commit()
+                return jsonify({"description": "Created."}), 201
+            else:
+                return jsonify({"description": "No response."}), 204
 
     except OperationalError as e:
         return jsonify({"description": "Wraps a DB-API OperationalError."}), 500
@@ -106,17 +111,21 @@ def updatePreferredShop(shopId):
 @api_bp.route("/preferred_shops/<int:shopId>", methods=["DELETE"])
 def removePreferredShop(shopId):
     try:
-        shop = Shop.query.filter_by(id=shopId).first()
-        # check whether User_Shop is already in association table
-        association = (
-            User_Shop.query.filter_by(user_id=9).filter_by(shop_id=shop.id).first()
-        )
-        if association is not None:
-            db.session.delete(association)
-            db.session.commit()
-            return jsonify({"description": "Deleted."}), 200
-        else:
-            return jsonify({"description": "No response."}), 204
+        user = User.query.filter_by(email=g.user["email"]).one_or_none()
+        if user:
+            shop = Shop.query.filter_by(id=shopId).first()
+            # check whether User_Shop is already in association table
+            association = (
+                User_Shop.query.filter_by(user_id=user.id)
+                .filter_by(shop_id=shop.id)
+                .first()
+            )
+            if association is not None:
+                db.session.delete(association)
+                db.session.commit()
+                return jsonify({"description": "Deleted."}), 200
+            else:
+                return jsonify({"description": "No response."}), 204
 
     except OperationalError as e:
         return jsonify({"description": "Wraps a DB-API OperationalError."}), 500
