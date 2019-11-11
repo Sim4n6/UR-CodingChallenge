@@ -3,6 +3,7 @@ from sqlalchemy.exc import OperationalError, SQLAlchemyError
 from sqlalchemy.orm import sessionmaker
 
 from ur_cc_app import db
+from ur_cc_app import simple_geoip
 from ur_cc_app.models import Shop, User, User_Shop, shop_schema
 
 # Blueprint Configuration
@@ -16,7 +17,7 @@ api_bp = Blueprint(
 
 
 @api_bp.route("/shops", methods=["GET"])
-def listAllShops(limit=None, sortByDistance=1):
+def listAllShops(limit=None, sortByDistance=False):
 
     limit_arg = request.args.get("limit")
     sortByDistance_arg = request.args.get("sortByDistance")
@@ -32,7 +33,13 @@ def listAllShops(limit=None, sortByDistance=1):
         elif limit != None:
             results = Shop.query.limit(limit)
         else:
-            results = Shop.query.all()
+            if sortByDistance:
+                geoip_data = simple_geoip.get_geoip_data()
+                user_lat = geoip_data.location.get("lat")
+                user_lng = geoip_data.location.get("lng")
+                results = Shop.query.order_by(Shop.name).all()
+            else:
+                results = Shop.query.all()
 
         if results != None:
             return jsonify(shop_schema.dump(results)), 200
@@ -56,10 +63,7 @@ def updateShop(shopId):
 
 
 @api_bp.route("/preferred_shops", methods=["GET"])
-def listAllPreferredShops(sortByDistance=1):
-
-    sortByDistance = request.args.get("sortByDistance")
-    print(f">>> isSortedBy distance: {sortByDistance}")
+def listAllPreferredShops():
 
     try:
 

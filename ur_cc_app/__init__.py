@@ -6,9 +6,13 @@ from flask import Blueprint, Flask
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
+from flask_simple_geoip import SimpleGeoIP
 
 db = SQLAlchemy()
 ma = Marshmallow()
+
+# Initialize the extension Geo IP location ext
+simple_geoip = SimpleGeoIP()
 
 
 def create_app():
@@ -21,6 +25,7 @@ def create_app():
 
     db.init_app(app)
     ma.init_app(app)
+    simple_geoip.init_app(app)
     bootstrap = Bootstrap(app)
 
     # register bluprints

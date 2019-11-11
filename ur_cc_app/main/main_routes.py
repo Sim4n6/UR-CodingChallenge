@@ -26,11 +26,11 @@ def nearby():
     """Nearby shops view function."""
 
     # get all shops
-    response = listAllShops(limit=10, sortByDistance=1)
+    response = listAllShops(limit=None, sortByDistance=True)
     all_shops = response[0].get_json()
 
     # get all preferred shops
-    response = listAllPreferredShops(sortByDistance=1)
+    response = listAllPreferredShops()
     all_preferred_shops = response[0].get_json()
 
     # keep only those shops that are not in preferred shops
