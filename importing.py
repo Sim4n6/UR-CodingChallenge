@@ -2,7 +2,15 @@ import os
 
 import bcrypt
 import bson
-from sqlalchemy import Column, ForeignKey, Integer, Numeric, String, create_engine
+from sqlalchemy import (
+    Column,
+    ForeignKey,
+    Integer,
+    Numeric,
+    String,
+    create_engine,
+    Binary,
+)
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 
@@ -46,7 +54,7 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(100))
     email = Column(String(100))
-    password = Column(String(150))
+    password = Column(Binary(150))
 
     def __repr__(self):
         return f"<User {name}>"
@@ -112,11 +120,11 @@ f.close()
 # add some fake users: Password for sim4n6@gmail.com is 123456789
 # password for account karim@gmail is 1234567
 salt = bcrypt.gensalt()
-hashed = bcrypt.hashpw("123456789".encode("utf-8"), salt)
+hashed = bcrypt.hashpw(b"123456789", salt)
 user1 = User(name="Simohamed", email="sim4n6@gmail.com", password=hashed)
 
 salt = bcrypt.gensalt()
-hashed = bcrypt.hashpw("1234567".encode("utf-8"), salt)
+hashed = bcrypt.hashpw(b"1234567", salt)
 user2 = User(name="Karim", email="karim@gmail.com", password=hashed)
 
 session.add_all([user1, user2])

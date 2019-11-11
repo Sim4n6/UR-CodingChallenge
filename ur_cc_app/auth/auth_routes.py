@@ -75,7 +75,7 @@ def login():
             redirect(url_for("auth_bp.registration"))
         else:
             #  compare the typed password and the hashed stored password (user.password)
-            if bcrypt.checkpw(password.encode("utf-8"), user.password.encode("utf-8")):
+            if bcrypt.checkpw(password.encode("utf-8"), user.password):
                 flash("Credentials are correct, you are now logged in.", "success")
                 session["username"] = {
                     "name": user.name,
