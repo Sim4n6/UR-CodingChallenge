@@ -3,11 +3,22 @@
 
 {% block content %}
 <div class="container">
-    <h1>{{ title }}</h1>
-
-    <div class="row justify-content-md-center">  
-        <a href="{{ url_for('auth_bp.login')}}">Login to your account.</a> 
-        <a href="{{ url_for('auth_bp.registration')}}">Register a new account.</a>
+    <div class="row justify-content-md-center">
+        <div class="jumbotron">
+            <h1 class="display-4">Hello ! </h1>
+            <p class="lead">This is me trying to solve the <a
+                    href="https://github.com/hiddenfounders/web-coding-challenge" target="_blank">United Remote Coding
+                    Challenge</a>.</p>
+            <hr class="my-4">
+            <p>The functionnalities implemented so far are :</p>
+            <ul>
+                <li><a href="{{ url_for('auth_bp.login')}}">Login to your account.</a> </li>
+                <li><a href="{{ url_for('auth_bp.registration')}}">Register a new account.</a></li>
+                <li>Nearby shops</li>
+                <li>Preferred shops for each user.</li>
+                <li>Still TODO : secure API.</li>
+            </ul>
+        </div>
     </div>
 
 </div>
