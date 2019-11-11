@@ -16,20 +16,20 @@ A Python project for UnitedRemote Coding Challenge <https://github.com/hiddenfou
 #### Webapp :
  - *run_app.py* : a py script to run the whole web app.
  
- ###### api 
+ ##### api 
  api
  
- ###### auth 
+ ##### auth 
  auth
  
- ###### errors
+ ##### errors
  curstom errors handling blueprint
  
- ###### main 
+ ##### main 
  
  main implemented functionnalities blueprint.
  
-###### else
+##### else
 
  - static/ static files including favicon, a simple JS file and CSS file.
  - templates/ common template such as layout.html
