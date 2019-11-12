@@ -17,21 +17,27 @@ A Python project for UnitedRemote Coding Challenge <https://github.com/hiddenfou
  - *run_app.py* : a py script to run the whole web app.
  
  ##### api 
- api
+ - *api/* : a blueprint for api side of the webapp.
+ - *api/api_routes.py* : contains the api with view functions. Some routes are kept for future dev.
+ - *api/openapi.json* : This file is optional, hence can be deleted, initially I was planning to use Connexion framework (on top of Flask) with Swagger editor. Than I discovered that the api is very simple : basically 04 routes. 
  
  ##### auth 
- auth
+ - *auth/* : a blueprint for authentification functionnalities of the webapp such as registration and login (signup and signin).
+ - *auth/templates* : contains two templates login.html and registration.html. Those templates are jinja2 enabled and inherits from ur_cc_app/templates/layout.html template.
+ - *auth/auth_forms.py* : contains two forms for login and registration with the use of WTForms framework.
+ - *auth/auth_routes.py* : login and registration routes are implemented here with their logic. It uses bcrypt module for hashing passwords. 
  
  ##### errors
- curstom errors handling blueprint
+  - *errors/* : a blueprint for curstom error handling with their templates
  
  ##### main 
  
- main implemented functionnalities blueprint.
+  - *main/* : a blueprint for nearby and preferred functionnalities logic.
+  - *main/templates* : contains three templates "index.html" for the landing page, "nearby.html" for nearby shops listing, and "preferred.html" for listing preferred shops.  
  
 ##### else
 
- - static/ static files including favicon, a simple JS file and CSS file.
- - templates/ common template such as layout.html
- - config.py  
- - models.py : models goes here.
+ - static/ static files including favicon, a simple JS file for like/dislike/remove clicking functionnalities and a CSS file to do some styling factorization.
+ - templates/ common template such as layout.html from which all templates of the webpage inherits.
+ - config.py : a way to organize the environment variables necessary for the functionning of the webapp. To choose the right mode Production/Testing/Development you need to set the environment variable FLASK_CONFIG before starting the app otherwise it will start on Development mode.
+ - models.py : models that map to the relational database goes in this file. I use a basic use of Marshmallow module to make the models json enabled.
