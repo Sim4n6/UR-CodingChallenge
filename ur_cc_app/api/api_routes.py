@@ -5,6 +5,7 @@ from sqlalchemy.orm import sessionmaker
 from ur_cc_app import db
 from ur_cc_app import simple_geoip
 from ur_cc_app.models import Shop, User, User_Shop, shop_schema
+from ur_cc_app.auth import login_required
 
 # Blueprint Configuration
 api_bp = Blueprint(
@@ -17,6 +18,7 @@ api_bp = Blueprint(
 
 
 @api_bp.route("/shops", methods=["GET"])
+@login_required
 def listAllShops(sortByDistance=False):
 
     sortByDistance_arg = request.args.get("sortByDistance")
@@ -55,6 +57,7 @@ def updateShop(shopId):
 
 
 @api_bp.route("/preferred_shops", methods=["GET"])
+@login_required
 def listAllPreferredShops():
 
     try:
@@ -78,6 +81,7 @@ def listAllPreferredShops():
 
 
 @api_bp.route("/preferred_shops/<int:shopId>", methods=["POST"])
+@login_required
 def addPreferredShop(shopId):
     try:
         user = User.query.filter_by(email=g.user["email"]).one_or_none()
@@ -109,6 +113,7 @@ def updatePreferredShop(shopId):
 
 
 @api_bp.route("/preferred_shops/<int:shopId>", methods=["DELETE"])
+@login_required
 def removePreferredShop(shopId):
     try:
         user = User.query.filter_by(email=g.user["email"]).one_or_none()
